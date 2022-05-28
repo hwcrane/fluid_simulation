@@ -28,6 +28,7 @@ pub fn run() {
     canvas.clear();
     canvas.present();
 
+    let colour = colorgrad::inferno();
     let mut event_pump = sdl_context.event_pump().unwrap();
 
     let mut past_mouse_x: i32 = 0;
@@ -78,21 +79,25 @@ pub fn run() {
 
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
-        draw_density(&mut canvas, &simulation);
+        draw_density(&mut canvas, &simulation, &colour);
         if display_velocity {
             draw_velocity_arrows(&mut canvas, &simulation)
         }
         canvas.present();
     }
 }
-fn draw_density(canvas: &mut Canvas<Window>, simulation: &Simulation) {
+fn draw_density(
+    canvas: &mut Canvas<Window>,
+    simulation: &Simulation,
+    colour: &colorgrad::Gradient,
+) {
     let density = simulation.density();
 
     for x in 0..NUM_CELLS {
         for y in 0..NUM_CELLS {
             let d = density[simulation.ix(x, y) as usize];
-            let colour = (d * 255.) as u8;
-            canvas.set_draw_color(Color::RGB(colour, colour, colour));
+            let (r, g, b, _) = colour.at(d.min(1.) as f64).rgba_u8();
+            canvas.set_draw_color(Color::RGB(r, g, b));
 
             let rect = Rect::new(
                 (x * CELL_WIDTH) as i32,
