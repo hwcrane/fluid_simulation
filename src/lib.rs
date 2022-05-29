@@ -6,13 +6,13 @@ use sdl2::{
 use simulation::Simulation;
 
 // Constants
-const WINDOW_SIZE: u32 = 1000;
-const NUM_CELLS: u32 = 100;
+const WINDOW_SIZE: u32 = 800;
+const NUM_CELLS: u32 = 200;
 const CELL_WIDTH: u32 = WINDOW_SIZE / NUM_CELLS;
 
 pub fn run() {
     // Simulation Setup
-    let mut simulation = Simulation::new(NUM_CELLS as usize);
+    let mut simulation = Simulation::new(0.005, 0.0005, 0.0, NUM_CELLS as usize);
 
     //SDL setup
     let sdl_context = sdl2::init().unwrap();
@@ -49,8 +49,13 @@ pub fn run() {
         }
 
         if event_pump.mouse_state().left() {
-            let x = event_pump.mouse_state().x() as u32 / CELL_WIDTH;
-            let y = event_pump.mouse_state().y() as u32 / CELL_WIDTH;
+            let x = (event_pump.mouse_state().x() as u32 / CELL_WIDTH)
+                .max(1)
+                .min(NUM_CELLS - 2);
+            let y = (event_pump.mouse_state().y() as u32 / CELL_WIDTH)
+                .max(1)
+                .min(NUM_CELLS - 2);
+
             simulation.add_density(x, y, 1.);
             simulation.add_density(x + 1, y, 1.);
             simulation.add_density(x - 1, y, 1.);
@@ -64,10 +69,10 @@ pub fn run() {
             let dx = x - past_mouse_x;
             let dy = y - past_mouse_y;
             simulation.add_velocity(
-                x as u32 / CELL_WIDTH,
-                y as u32 / CELL_WIDTH,
-                dx as f32,
-                dy as f32,
+                (x as u32 / CELL_WIDTH).max(1).min(NUM_CELLS - 2),
+                (y as u32 / CELL_WIDTH).max(1).min(NUM_CELLS - 2),
+                dx as f32 * 5.,
+                dy as f32 * 5.,
             );
             past_mouse_x = x;
             past_mouse_y = y;
@@ -124,8 +129,8 @@ fn draw_velocity_arrows(canvas: &mut Canvas<Window>, simulation: &Simulation) {
             let start_y = y * CELL_WIDTH + CELL_WIDTH / 2;
 
             // Change in x and y
-            let dx = (vel_x[simulation.ix(x, y) as usize] * 100.).round() / 100.;
-            let dy = (vel_y[simulation.ix(x, y) as usize] * 100.).round() / 100.;
+            let dx = (vel_x[simulation.ix(x, y) as usize] * 1000.).round() / 1000.;
+            let dy = (vel_y[simulation.ix(x, y) as usize] * 1000.).round() / 1000.;
 
             // Set to 1 if velocity is 0
             let normalising_factor = if dx == 0. && dy == 0. {

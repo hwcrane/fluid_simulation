@@ -2,7 +2,7 @@ use std::mem::swap;
 
 pub struct Simulation {
     speed: f32,
-    viscoscity: f32,
+    viscosity: f32,
     diffusion: f32,
 
     // number of cells vertically and horesontally
@@ -20,11 +20,11 @@ pub struct Simulation {
 }
 
 impl Simulation {
-    pub fn new(size: usize) -> Simulation {
+    pub fn new(speed: f32, viscosity: f32, diffusion: f32, size: usize) -> Simulation {
         Simulation {
-            speed: 0.02,
-            viscoscity: 0.0005,
-            diffusion: 0.00005,
+            speed,
+            viscosity,
+            diffusion,
             size: size as u32,
             density: vec![0.; size * size],
             prev_density: vec![0.; size * size],
@@ -75,7 +75,7 @@ impl Simulation {
             1,
             &mut self.vel_x,
             &self.prev_vel_x,
-            self.viscoscity,
+            self.viscosity,
             self.speed,
         );
         diffuse(
@@ -83,7 +83,7 @@ impl Simulation {
             2,
             &mut self.vel_y,
             &self.prev_vel_y,
-            self.viscoscity,
+            self.viscosity,
             self.speed,
         );
         project(
