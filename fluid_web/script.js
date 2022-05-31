@@ -47,7 +47,7 @@ async function run() {
         let gridX = Math.max(Math.min((x / document.documentElement.clientWidth) * SIZE, SIZE - 1), 0);
         let gridY = Math.max(Math.min((y / document.documentElement.clientHeight) * SIZE, SIZE - 1), 0);
 
-        simulation.add_density(gridX, gridY, 1.);
+        simulation.add_density(gridX, gridY, 5.);
         simulation.add_velocity(gridX, gridY, dx * 5, dy * 5);
         prevTouchX = x;
         prevTouchY = y;
