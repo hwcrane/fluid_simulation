@@ -1,4 +1,4 @@
-import init, * as wasm from "./pkg/fluid_wasm.js";
+import init, * as wasm from "./wasm/fluid_wasm.js";
 
 const SIZE = 200;
 const SCALE = 10;
