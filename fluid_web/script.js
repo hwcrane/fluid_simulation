@@ -13,6 +13,13 @@ canvas.height = SIZE * SCALE;
 const ctx = canvas.getContext("2d");
 ctx.fillStyle = "black";
 ctx.fillRect(0, 0, SIZE * SCALE, SIZE * SCALE);
+canvas.addEventListener("touchstart", function(event) { event.preventDefault() })
+canvas.addEventListener("touchmove", function(event) { event.preventDefault() })
+canvas.addEventListener("touchend", function(event) { event.preventDefault() })
+canvas.addEventListener("touchcancel", function(event) { event.preventDefault() })
+
+let prevTouchX = 0.;
+let prevTouchY = 0.;
 
 async function run() {
     await init();
@@ -27,6 +34,23 @@ async function run() {
             simulation.add_velocity(x, y, e.movementX * 5, e.movementY * 5);
         }
     });
+
+    canvas.addEventListener("touchmove", e => {
+        let offsetx = canvas.offsetLeft;
+        let offsety = canvas.offsetTop;
+        let x = e.changedTouches[0].pageX - offsetx;
+        let y = e.changedTouches[0].pageY - offsety;
+        let dx = x - prevTouchX;
+        let dy = y - prevTouchY;
+
+        let gridX = Math.max(Math.min(Math.round(x / SCALE), SIZE - 1), 0);
+        let gridY = Math.max(Math.min(Math.round(y / SCALE), SIZE - 1), 0);
+
+        simulation.add_density(gridX, gridY, 1.);
+        simulation.add_velocity(gridX, gridY, dx, dy);
+        prevTouchX = x;
+        prevTouchY = y;
+    })
 
     mainloop(simulation);
 }
