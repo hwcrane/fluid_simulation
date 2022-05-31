@@ -1,9 +1,7 @@
-mod simulation;
+use fluid_engine::Simulation;
 use sdl2::{
-    event::Event, keyboard::Keycode, libc::SIGEMT, pixels::Color, rect::Rect, render::Canvas,
-    video::Window,
+    event::Event, keyboard::Keycode, pixels::Color, rect::Rect, render::Canvas, video::Window,
 };
-use simulation::Simulation;
 
 // Constants
 const WINDOW_SIZE: u32 = 800;

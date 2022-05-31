@@ -39,6 +39,10 @@ impl Simulation {
         &self.vel_x
     }
 
+    pub fn size(&self) -> u32 {
+        self.size
+    }
+
     pub fn vel_y(&self) -> &Vec<f32> {
         &self.vel_y
     }
