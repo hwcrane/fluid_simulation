@@ -2,7 +2,7 @@
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
 export function __wbg_simulationwasm_free(a: number): void;
-export function simulationwasm_new(): number;
+export function simulationwasm_new(a: number, b: number, c: number, d: number): number;
 export function simulationwasm_add_density(a: number, b: number, c: number, d: number): void;
 export function simulationwasm_add_velocity(a: number, b: number, c: number, d: number, e: number): void;
 export function simulationwasm_step(a: number): void;

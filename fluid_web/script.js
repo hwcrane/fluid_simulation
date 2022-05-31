@@ -1,7 +1,10 @@
 import init, * as wasm from "./wasm/fluid_wasm.js";
 
-const SIZE = 200;
+const SIZE = 100;
 const SCALE = 10;
+const SPEED = 0.005;
+const DIFFUSION = 0.;
+const VISCOSITY = 0.0005;
 
 const canvas = document.getElementById("canvas");
 canvas.width = SIZE * SCALE;
@@ -13,7 +16,7 @@ ctx.fillRect(0, 0, SIZE * SCALE, SIZE * SCALE);
 
 async function run() {
     await init();
-    let simulation = new wasm.SimulationWasm();
+    let simulation = new wasm.SimulationWasm(SPEED, VISCOSITY, DIFFUSION, SIZE);
 
     canvas.addEventListener('mousemove', e => {
         if (e.buttons == 1) {

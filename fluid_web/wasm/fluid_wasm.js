@@ -208,9 +208,13 @@ export class SimulationWasm {
         wasm.__wbg_simulationwasm_free(ptr);
     }
     /**
+    * @param {number} speed
+    * @param {number} viscosity
+    * @param {number} diffusion
+    * @param {number} size
     */
-    constructor() {
-        const ret = wasm.simulationwasm_new();
+    constructor(speed, viscosity, diffusion, size) {
+        const ret = wasm.simulationwasm_new(speed, viscosity, diffusion, size);
         return SimulationWasm.__wrap(ret);
     }
     /**

@@ -5,8 +5,12 @@
 export class SimulationWasm {
   free(): void;
 /**
+* @param {number} speed
+* @param {number} viscosity
+* @param {number} diffusion
+* @param {number} size
 */
-  constructor();
+  constructor(speed: number, viscosity: number, diffusion: number, size: number);
 /**
 * @param {number} x
 * @param {number} y
@@ -37,7 +41,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_simulationwasm_free: (a: number) => void;
-  readonly simulationwasm_new: () => number;
+  readonly simulationwasm_new: (a: number, b: number, c: number, d: number) => number;
   readonly simulationwasm_add_density: (a: number, b: number, c: number, d: number) => void;
   readonly simulationwasm_add_velocity: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly simulationwasm_step: (a: number) => void;

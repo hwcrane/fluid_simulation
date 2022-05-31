@@ -4,6 +4,7 @@ pub struct Simulation {
     speed: f32,
     viscosity: f32,
     diffusion: f32,
+    dispersion: f32,
 
     // number of cells vertically and horesontally
     size: u32,
@@ -25,6 +26,7 @@ impl Simulation {
             speed,
             viscosity,
             diffusion,
+            dispersion: 0.001,
             size: size as u32,
             density: vec![0.; size * size],
             prev_density: vec![0.; size * size],
@@ -146,7 +148,8 @@ impl Simulation {
             &self.vel_x,
             &self.vel_y,
             0.005,
-        )
+        );
+        disperse(self.dispersion, &mut self.density);
     }
 }
 
@@ -273,6 +276,10 @@ fn advect(
         }
     }
     set_bnd(size, b, current)
+}
+
+fn disperse(amount: f32, density: &mut Vec<f32>) {
+    density.iter_mut().for_each(|x| *x -= amount * *x)
 }
 
 fn set_bnd(size: u32, b: u32, current: &mut Vec<f32>) {

@@ -12,8 +12,8 @@ pub struct SimulationWasm {
 #[wasm_bindgen]
 impl SimulationWasm {
     #[wasm_bindgen(constructor)]
-    pub fn new() -> SimulationWasm {
-        let simulation = Simulation::new(0.005, 0.0005, 0., 100);
+    pub fn new(speed: f32, viscosity: f32, diffusion: f32, size: usize) -> SimulationWasm {
+        let simulation = Simulation::new(speed, viscosity, diffusion, size);
         let document = web_sys::window().unwrap().document().unwrap();
         let canvas = document.get_element_by_id("canvas").unwrap();
         let canvas: HtmlCanvasElement = canvas
