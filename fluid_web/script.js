@@ -57,10 +57,23 @@ async function run() {
 
     mainloop(simulation);
 }
+blur = function() {
+
+    var ctx = canvas.getContext("2d");
+    ctx.globalAlpha = 0.3;
+
+    var offset = 3;
+
+    for (var i = 1; i <= 8; i += 1) {
+        ctx.drawImage(canvas, offset, 0, canvas.width - offset, canvas.height, 0, 0, canvas.width - offset, canvas.height);
+        ctx.drawImage(canvas, 0, offset, canvas.width, canvas.height - offset, 0, 0, canvas.width, canvas.height - offset);
+    }
+};
 
 function mainloop(simulaiton) {
     simulaiton.step();
     simulaiton.draw_density(SCALE);
+    blur()
     // simulaiton.draw_velocity();
     window.requestAnimationFrame(() => {
         mainloop(simulaiton)
