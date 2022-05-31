@@ -1,6 +1,6 @@
 import init, * as wasm from "./wasm/fluid_wasm.js";
 
-const SIZE = 100;
+const SIZE = 150;
 const SPEED = 0.005;
 const DIFFUSION = 0.;
 const VISCOSITY = 0.0005;
@@ -8,7 +8,7 @@ const VISCOSITY = 0.0005;
 let clientWidth = document.documentElement.clientWidth;
 let clientHeight = document.documentElement.clientHeight;
 let minimum = Math.min(clientWidth, clientHeight);
-let SCALE = minimum / SIZE;
+let SCALE = minimum / SIZE * 2;
 
 const canvas = document.getElementById("canvas");
 canvas.width = SIZE * SCALE;
@@ -31,9 +31,10 @@ async function run() {
 
     canvas.addEventListener('mousemove', e => {
         if (e.buttons == 1) {
-            let x = Math.round(e.offsetX / SCALE);
-            let y = Math.min(Math.round(e.offsetY / SCALE), SIZE - 1);
-            simulation.add_density(x, y, 1.);
+            // let x = Math.round(e.offsetX / SCALE);
+            let x = Math.round((e.offsetX / document.documentElement.clientWidth) * SIZE);
+            let y = Math.round((e.offsetY / document.documentElement.clientHeight) * SIZE);
+            simulation.add_density(x, y, 5.);
             simulation.add_velocity(x, y, e.movementX * 5, e.movementY * 5);
         }
     });
@@ -60,7 +61,7 @@ async function run() {
 blur = function() {
 
     var ctx = canvas.getContext("2d");
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = 0.4;
 
     var offset = 3;
 

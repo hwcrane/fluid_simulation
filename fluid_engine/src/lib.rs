@@ -26,7 +26,7 @@ impl Simulation {
             speed,
             viscosity,
             diffusion,
-            dispersion: 0.001,
+            dispersion: 0.0005,
             size: size as u32,
             density: vec![0.; size * size],
             prev_density: vec![0.; size * size],
