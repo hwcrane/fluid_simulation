@@ -31,7 +31,6 @@ async function run() {
 
     canvas.addEventListener('mousemove', e => {
         if (e.buttons == 1) {
-            // let x = Math.round(e.offsetX / SCALE);
             let x = Math.round((e.offsetX / document.documentElement.clientWidth) * SIZE);
             let y = Math.round((e.offsetY / document.documentElement.clientHeight) * SIZE);
             simulation.add_density(x, y, 5.);
@@ -40,15 +39,13 @@ async function run() {
     });
 
     canvas.addEventListener("touchmove", e => {
-        let offsetx = canvas.offsetLeft;
-        let offsety = canvas.offsetTop;
-        let x = e.changedTouches[0].pageX - offsetx;
-        let y = e.changedTouches[0].pageY - offsety;
+        let x = e.changedTouches[0].pageX;
+        let y = e.changedTouches[0].pageY;
         let dx = x - prevTouchX;
         let dy = y - prevTouchY;
 
-        let gridX = Math.max(Math.min(x / SCALE, SIZE - 1), 0);
-        let gridY = Math.max(Math.min(y / SCALE, SIZE - 1), 0);
+        let gridX = Math.max(Math.min((x / document.documentElement.clientWidth) * SIZE, SIZE - 1), 0);
+        let gridY = Math.max(Math.min((y / document.documentElement.clientHeight) * SIZE, SIZE - 1), 0);
 
         simulation.add_density(gridX, gridY, 1.);
         simulation.add_velocity(gridX, gridY, dx * 5, dy * 5);
