@@ -1,10 +1,14 @@
 import init, * as wasm from "./wasm/fluid_wasm.js";
 
 const SIZE = 100;
-const SCALE = 10;
 const SPEED = 0.005;
 const DIFFUSION = 0.;
 const VISCOSITY = 0.0005;
+
+let clientWidth = document.documentElement.clientWidth;
+let clientHeight = document.documentElement.clientHeight;
+let minimum = Math.min(clientWidth, clientHeight);
+let SCALE = minimum / SIZE;
 
 const canvas = document.getElementById("canvas");
 canvas.width = SIZE * SCALE;
@@ -27,7 +31,6 @@ async function run() {
 
     canvas.addEventListener('mousemove', e => {
         if (e.buttons == 1) {
-            console.log(e);
             let x = Math.round(e.offsetX / SCALE);
             let y = Math.min(Math.round(e.offsetY / SCALE), SIZE - 1);
             simulation.add_density(x, y, 1.);
@@ -43,11 +46,11 @@ async function run() {
         let dx = x - prevTouchX;
         let dy = y - prevTouchY;
 
-        let gridX = Math.max(Math.min(Math.round(x / SCALE), SIZE - 1), 0);
-        let gridY = Math.max(Math.min(Math.round(y / SCALE), SIZE - 1), 0);
+        let gridX = Math.max(Math.min(x / SCALE, SIZE - 1), 0);
+        let gridY = Math.max(Math.min(y / SCALE, SIZE - 1), 0);
 
         simulation.add_density(gridX, gridY, 1.);
-        simulation.add_velocity(gridX, gridY, dx, dy);
+        simulation.add_velocity(gridX, gridY, dx * 5, dy * 5);
         prevTouchX = x;
         prevTouchY = y;
     })
@@ -58,7 +61,7 @@ async function run() {
 function mainloop(simulaiton) {
     simulaiton.step();
     simulaiton.draw_density(SCALE);
-    simulaiton.draw_velocity();
+    // simulaiton.draw_velocity();
     window.requestAnimationFrame(() => {
         mainloop(simulaiton)
     })

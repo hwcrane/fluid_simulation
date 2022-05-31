@@ -53,7 +53,7 @@ impl SimulationWasm {
     }
 
     #[wasm_bindgen]
-    pub fn draw_density(&self, scale: usize) {
+    pub fn draw_density(&self, scale: f32) {
         let density = self.simulation.density();
         for x in 0..self.simulation.size() {
             for y in 0..self.simulation.size() {
